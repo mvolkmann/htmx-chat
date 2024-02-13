@@ -12,7 +12,8 @@ const Layout: FC = props => {
       <head>
         <title>{props.title}</title>
         <link rel="stylesheet" href="/styles.css" />
-        <script src="/htmx.min.js" type="module"></script>
+        <script src="/htmx.min.js"></script>
+        <script src="/htmx-ws.js"></script>
       </head>
       <body>{props.children}</body>
     </html>
@@ -22,9 +23,23 @@ const Layout: FC = props => {
 const router = new Hono();
 
 router.get('/', (c: Context) => {
+  const attrs = {
+    'hx-on:htmx:ws-after-send': 'document.querySelector("form").reset()'
+  };
   return c.html(
     <Layout title="Chat Demo">
       <h1>Chat Away!</h1>
+      <div hx-ext="ws" ws-connect="/chat/ws-client" {...attrs}>
+        <form ws-send>
+          <label>
+            Send:
+            <input name="message" type="text" />
+          </label>
+          <button>Submit</button>
+        </form>
+        <div id="response"></div>
+      </div>
+      <button onclick="wsClient.send('test')">Send Test</button>
       <main>
         <nav id="people">
           <h2>People</h2>
@@ -37,7 +52,7 @@ router.get('/', (c: Context) => {
         <section id="messages">
           <h2>Messages</h2>
           <ul id="message-list"></ul>
-          <form method="post">
+          <form wss>
             <input type="text" name="message" />
             <button>Send</button>
           </form>
@@ -45,6 +60,37 @@ router.get('/', (c: Context) => {
       </main>
     </Layout>
   );
+});
+
+/**
+ * This creates a WebSocket server and returns a WebSocket client.
+ * See https://developers.cloudflare.com/workers/examples/websockets/.
+ */
+router.get('/ws-client', (c: Context) => {
+  const upgradeHeader = c.req.header('Upgrade');
+  if (upgradeHeader !== 'websocket') {
+    return c.text('upgrade header required', {status: 426});
+  }
+
+  const webSocketPair = new WebSocketPair();
+  const [client, server] = Object.values(webSocketPair);
+
+  server.accept();
+  server.addEventListener('message', event => {
+    const {data} = event;
+    if (typeof data === 'string') {
+      const {message} = JSON.parse(data);
+      console.log('chat-router.tsx: message =', message);
+      client.send(message.toUpperCase());
+    } else {
+      console.error('chat-router.tsx : unexpected data type', typeof data);
+    }
+  });
+
+  return new Response(null, {
+    status: 101, // switching protocols
+    webSocket: client
+  });
 });
 
 router.get('/messages', (c: Context) => {
