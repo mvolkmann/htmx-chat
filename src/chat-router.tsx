@@ -1,11 +1,60 @@
 import {Context, Hono} from 'hono';
+import type {FC} from 'hono/jsx';
 import {z} from 'zod';
 import {zValidator} from '@hono/zod-validator';
+
+const people = ['Mark', 'Tami', 'Amanda', 'Jeremy'];
+
+// This provides HTML boilerplate for any page.
+const Layout: FC = props => {
+  return (
+    <html>
+      <head>
+        <title>{props.title}</title>
+        <link rel="stylesheet" href="/styles.css" />
+        <script src="/htmx.min.js" type="module"></script>
+      </head>
+      <body>{props.children}</body>
+    </html>
+  );
+};
 
 const router = new Hono();
 
 router.get('/', (c: Context) => {
-  return c.text('Hello, world!');
+  return c.html(
+    <Layout title="Chat Demo">
+      <h1>Chat Away!</h1>
+      <main>
+        <nav id="people">
+          <h2>People</h2>
+          {people.map(person => (
+            <button hx-get="/chat/messages" hx-target="#message-list">
+              {person}
+            </button>
+          ))}
+        </nav>
+        <section id="messages">
+          <h2>Messages</h2>
+          <ul id="message-list"></ul>
+          <form method="post">
+            <input type="text" name="message" />
+            <button>Send</button>
+          </form>
+        </section>
+      </main>
+    </Layout>
+  );
+});
+
+router.get('/messages', (c: Context) => {
+  return c.html(
+    <>
+      <li>Hello!</li>
+      <li>How are you today?</li>
+      <li>What time is dinner?</li>
+    </>
+  );
 });
 
 /*
