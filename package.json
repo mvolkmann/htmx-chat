@@ -1,14 +1,18 @@
 {
   "scripts": {
-    "dev": "wrangler dev src/index.ts",
-    "deploy": "wrangler deploy --minify src/index.ts",
-    "reinstall": "rm -rf node_modules bun.lockb && bun install"
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify",
+    "format": "prettier --write '{public,src}/**/*.{css,html,js,ts}'",
+    "reinstall": "rm -rf node_modules bun.lockb && bun install",
+    "start": "wrangler dev"
   },
   "dependencies": {
+    "@hono/zod-validator": "^0.1.11",
     "hono": "^4.0.1"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20240208.0",
+    "typescript": "^5.3.3",
     "wrangler": "^3.25.0"
   }
 }
