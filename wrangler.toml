@@ -1,5 +1,5 @@
 name = "htmx-chat"
-main = "src/server.ts"
+main = "src/server.tsx"
 compatibility_date = "2023-12-18"
 
 [site]

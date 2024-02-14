@@ -26,12 +26,20 @@ app.get('/ws', c => {
   server.accept();
 
   server.addEventListener('message', event => {
-    const message = event.data;
-    console.log('message =', message);
-    if (typeof message === 'string') {
-      server.send(message.toUpperCase());
+    const {data} = event;
+    console.log('data =', data);
+    if (typeof data === 'string') {
+      const message = data.startsWith('{') ? JSON.parse(data).message : data;
+      console.log('message =', message);
+      const html = (
+        <div id="response" hx-swap-oob="true">
+          {message.toUpperCase()}
+        </div>
+      );
+      // server.send(message.toUpperCase());
+      server.send(html.toString());
     } else {
-      console.error('unexpected message type', typeof message);
+      console.error('unexpected message data type', typeof data);
     }
   });
 

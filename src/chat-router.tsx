@@ -14,7 +14,6 @@ const Layout: FC = props => {
         <link rel="stylesheet" href="/styles.css" />
         <script src="/htmx.min.js"></script>
         <script src="/htmx-ws.js"></script>
-        <script src="/setup.js"></script>
       </head>
       <body>{props.children}</body>
     </html>
@@ -30,10 +29,8 @@ router.get('/', (c: Context) => {
   return c.html(
     <Layout title="Chat Demo">
       <h1>Chat Away!</h1>
-      {/* <div hx-ext="ws" ws-connect="/chat/ws-client" {...attrs}> */}
-      <div {...attrs}>
-        {/* <form ws-send> */}
-        <form>
+      <div hx-ext="ws" ws-connect="/ws" {...attrs}>
+        <form ws-send>
           <label>
             Send:
             <input name="message" type="text" />
@@ -41,7 +38,6 @@ router.get('/', (c: Context) => {
           <button>Submit</button>
         </form>
       </div>
-      <button onclick="wsSend('test')">Send Test</button>
       <div id="response"></div>
       <main>
         <nav id="people">

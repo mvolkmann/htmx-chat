@@ -1,3 +1,5 @@
+/* This code is not needed when using htmx WebSocket support.
+
 const ws = new WebSocket('ws://localhost:8787/ws');
 if (!ws) {
   throw new Error("Server didn't accept WebSocket");
@@ -31,3 +33,4 @@ function wsSend(message) {
   console.log('Sending WebSocket message:', message);
   ws.send(message);
 }
+*/
