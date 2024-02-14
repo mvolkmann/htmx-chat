@@ -1,4 +1,4 @@
-import {Hono} from 'hono';
+import {Context, Hono} from 'hono';
 import {serveStatic} from 'hono/cloudflare-workers';
 
 // @ts-ignore
@@ -17,12 +17,24 @@ function getAnswer(question: string): string {
 
 const app = new Hono();
 
+app.delete('/question/:id', (c: Context) => {
+  const id = c.req.param('id');
+  const html = (
+    <>
+      <li id={'question' + id} hx-swap-oob="outerHTML"></li>
+      <li id={'answer' + id} hx-swap-oob="outerHTML"></li>
+    </>
+  );
+
+  return new Response(html.toString());
+});
+
 // This serves static files from the
 // [site] bucket directory specified in wrangler.toml.
 app.get('/*', serveStatic({root: './', manifest}));
 
 // This establishes a WebSocket connection.
-app.get('/ws', c => {
+app.get('/ws', (c: Context) => {
   const upgradeHeader = c.req.header('Upgrade');
   if (upgradeHeader !== 'websocket') {
     return c.text('WebSocket upgrade header required', {status: 426});
@@ -42,7 +54,10 @@ app.get('/ws', c => {
       const html = (
         <>
           <ul id="question-list" hx-swap-oob="beforeend">
-            <li>{question}</li>
+            <li class="question" id={'question' + questionNumber}>
+              <div>{question}</div>
+              <button hx-delete={'/question/' + questionNumber}>✕</button>
+            </li>
           </ul>
           <ul id="answer-list" hx-swap-oob="beforeend">
             <li id={answerId}>{getAnswer(question)}</li>
