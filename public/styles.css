@@ -1,11 +1,13 @@
 #answers {
-  border: 1px solid gray;
-  border-radius: 0.5rem;
   flex-grow: 1;
-  padding: 1rem;
+
+  li {
+    color: red;
+  }
 }
 
 body {
+  background-color: cornflowerblue;
   font-family: sans-serif;
 }
 
@@ -16,27 +18,50 @@ button {
   padding: 0.5rem;
 }
 
+h1 {
+  color: orange;
+}
+
+h2 {
+  margin-top: 0;
+}
+
 input {
   border: 1px solid gray;
   border-radius: 0.5rem;
   padding: 0.5rem;
 }
 
-li {
-  color: purple;
+label {
+  color: white;
+  font-weight: bold;
+}
+
+.list {
+  background-color: white;
+  border: 1px solid gray;
+  border-radius: 0.5rem;
+  padding: 1rem;
+
+  li {
+    border-top: 1px dashed gray;
+    padding: 1rem 0;
+  }
 }
 
 main {
   display: flex;
   justify-content: space-between;
+  margin-top: 1rem;
   width: 100%;
 }
 
 #questions {
-  border: 1px solid gray;
-  border-radius: 0.5rem;
-  padding: 1rem;
   width: 10rem;
+
+  li {
+    color: green;
+  }
 }
 
 ul {
