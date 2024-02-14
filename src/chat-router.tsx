@@ -14,6 +14,7 @@ const Layout: FC = props => {
         <link rel="stylesheet" href="/styles.css" />
         <script src="/htmx.min.js"></script>
         <script src="/htmx-ws.js"></script>
+        <script src="/setup.js"></script>
       </head>
       <body>{props.children}</body>
     </html>
@@ -29,8 +30,10 @@ router.get('/', (c: Context) => {
   return c.html(
     <Layout title="Chat Demo">
       <h1>Chat Away!</h1>
-      <div hx-ext="ws" ws-connect="/chat/ws-client" {...attrs}>
-        <form ws-send>
+      {/* <div hx-ext="ws" ws-connect="/chat/ws-client" {...attrs}> */}
+      <div {...attrs}>
+        {/* <form ws-send> */}
+        <form>
           <label>
             Send:
             <input name="message" type="text" />
@@ -39,7 +42,7 @@ router.get('/', (c: Context) => {
         </form>
         <div id="response"></div>
       </div>
-      <button onclick="wsClient.send('test')">Send Test</button>
+      <button onclick="wsSend('test')">Send Test</button>
       <main>
         <nav id="people">
           <h2>People</h2>
@@ -66,6 +69,7 @@ router.get('/', (c: Context) => {
  * This creates a WebSocket server and returns a WebSocket client.
  * See https://developers.cloudflare.com/workers/examples/websockets/.
  */
+/*
 router.get('/ws-client', (c: Context) => {
   const upgradeHeader = c.req.header('Upgrade');
   if (upgradeHeader !== 'websocket') {
@@ -92,6 +96,7 @@ router.get('/ws-client', (c: Context) => {
     webSocket: client
   });
 });
+*/
 
 router.get('/messages', (c: Context) => {
   return c.html(
