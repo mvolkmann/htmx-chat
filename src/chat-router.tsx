@@ -40,9 +40,9 @@ router.get('/', (c: Context) => {
           </label>
           <button>Submit</button>
         </form>
-        <div id="response"></div>
       </div>
       <button onclick="wsSend('test')">Send Test</button>
+      <div id="response"></div>
       <main>
         <nav id="people">
           <h2>People</h2>

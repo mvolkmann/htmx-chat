@@ -10,6 +10,8 @@ ws.addEventListener('open', () => {
 ws.addEventListener('message', event => {
   const message = event.data;
   console.log('Received', message);
+  const target = document.getElementById('response');
+  target.innerHTML = message;
 });
 
 ws.addEventListener('close', message => {
