@@ -9,6 +9,8 @@
 body {
   background-color: cornflowerblue;
   font-family: sans-serif;
+
+  margin: 1rem;
 }
 
 button {
@@ -52,6 +54,8 @@ label {
 main {
   display: flex;
   justify-content: space-between;
+  gap: 1rem;
+
   margin-top: 1rem;
   width: 100%;
 }
