@@ -7,7 +7,8 @@ ws.addEventListener('open', () => {
   console.log('Opened WebSocket');
 });
 
-ws.addEventListener('message', message => {
+ws.addEventListener('message', event => {
+  const message = event.data;
   console.log('Received', message);
 });
 

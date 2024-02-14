@@ -20,14 +20,16 @@ app.get('/ws', c => {
   }
 
   const webSocketPair = new WebSocketPair();
+  //TODO: How should "client" be used?
   const [client, server] = Object.values(webSocketPair);
 
   server.accept();
+
   server.addEventListener('message', event => {
     const message = event.data;
     console.log('message =', message);
     if (typeof message === 'string') {
-      client.send(message.toUpperCase());
+      server.send(message.toUpperCase());
     } else {
       console.error('unexpected message type', typeof message);
     }
