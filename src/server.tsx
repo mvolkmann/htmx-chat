@@ -8,6 +8,8 @@ import magic8Ball from './magic8ball.json';
 // @ts-ignore
 import manifest from '__STATIC_CONTENT_MANIFEST';
 
+let questionNumber = 0;
+
 function getAnswer(question: string): string {
   const index = Math.floor(Math.random() * magic8Ball.length);
   return magic8Ball[index];
@@ -35,17 +37,33 @@ app.get('/ws', c => {
     const {data} = event;
     if (typeof data === 'string') {
       const question = data.startsWith('{') ? JSON.parse(data).message : data;
+      questionNumber++;
+      const answerId = 'answer' + questionNumber;
       const html = (
         <>
           <ul id="question-list" hx-swap-oob="beforeend">
             <li>{question}</li>
           </ul>
           <ul id="answer-list" hx-swap-oob="beforeend">
-            <li>{getAnswer(question)}</li>
+            <li id={answerId}>{getAnswer(question)}</li>
           </ul>
         </>
       );
-      server.send(html.toString());
+
+      // Simulate slow responses.
+      setTimeout(() => {
+        server.send(html.toString());
+      }, 1000);
+
+      // Send more detail later.
+      setTimeout(() => {
+        const html = (
+          <li id={answerId} hx-swap-oob="afterend">
+            <p>This provides more detail about the answer.</p>
+          </li>
+        );
+        server.send(html.toString());
+      }, 2000);
     } else {
       console.error('unexpected message data type', typeof data);
     }
