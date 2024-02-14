@@ -1,6 +1,5 @@
 import {Hono} from 'hono';
 import {serveStatic} from 'hono/cloudflare-workers';
-import chatRouter from './chat-router';
 // TODO: I don't know why this is needed.
 import manifest from '__STATIC_CONTENT_MANIFEST';
 
@@ -35,8 +34,6 @@ const app = new Hono();
 // This serves static files from the
 // [site] bucket directory specified in wrangler.toml.
 app.get('/*', serveStatic({root: './', manifest}));
-
-app.get('/', c => c.redirect('/chat'));
 
 app.get('/ws', c => {
   const upgradeHeader = c.req.header('Upgrade');
@@ -78,7 +75,5 @@ app.get('/ws', c => {
     webSocket: client
   });
 });
-
-app.route('/chat', chatRouter);
 
 export default app;
