@@ -73,7 +73,7 @@ app.get('/ws', (c: Context) => {
       // Send more detail later.
       setTimeout(() => {
         const html = (
-          <li id={answerId} hx-swap-oob="afterend">
+          <li id={answerId} hx-swap-oob="beforeend">
             <p>This provides more detail about the answer.</p>
           </li>
         );
