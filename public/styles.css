@@ -1,12 +1,8 @@
-#answers {
-  flex-grow: 1;
+.answer {
+  color: blue;
 
-  li {
-    color: red;
-
-    p {
-      color: gray;
-    }
+  p {
+    color: gray;
   }
 }
 
@@ -29,10 +25,6 @@ h1 {
   color: orange;
 }
 
-h2 {
-  margin-top: 0;
-}
-
 input {
   border: 1px solid gray;
   border-radius: 0.5rem;
@@ -44,51 +36,38 @@ label {
   font-weight: bold;
 }
 
-.list {
-  background-color: white;
-  border: 1px solid gray;
-  border-radius: 0.5rem;
-  padding: 1rem;
+.question > div {
+  display: flex;
+  justify-content: space-between;
 
-  li {
-    border-top: 1px dashed gray;
-    padding: 1rem 0;
+  color: green;
+
+  button {
+    color: red;
   }
 }
 
-main {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-
+table {
+  border-collapse: collapse;
   margin-top: 1rem;
   width: 100%;
 }
 
-.question {
-  display: flex;
-  gap: 1rem;
+td,
+th {
+  border: 1px solid cornflowerblue;
+  padding: 0.5rem;
+}
 
-  div {
-    flex-grow: 1;
+td {
+  background-color: white;
+
+  & button {
+    background-color: transparent;
+    color: white;
   }
 }
 
-#questions {
-  width: 10rem;
-
-  li {
-    color: green;
-
-    button {
-      background-color: transparent;
-      padding: 0;
-    }
-  }
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
+th {
+  background-color: orange;
 }

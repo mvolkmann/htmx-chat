@@ -19,12 +19,7 @@ const app = new Hono();
 
 app.delete('/question/:id', (c: Context) => {
   const id = c.req.param('id');
-  const html = (
-    <>
-      <li id={'question' + id} hx-swap-oob="delete"></li>
-      <li id={'answer' + id} hx-swap-oob="delete"></li>
-    </>
-  );
+  const html = <tr id={'question' + id} hx-swap-oob="delete"></tr>;
 
   return new Response(html.toString());
 });
@@ -52,17 +47,19 @@ app.get('/ws', (c: Context) => {
       questionNumber++;
       const answerId = 'answer' + questionNumber;
       const html = (
-        <>
-          <ul id="question-list" hx-swap-oob="beforeend">
-            <li class="question" id={'question' + questionNumber}>
-              <div>{question}</div>
-              <button hx-delete={'/question/' + questionNumber}>✕</button>
-            </li>
-          </ul>
-          <ul id="answer-list" hx-swap-oob="beforeend">
-            <li id={answerId}>{getAnswer(question)}</li>
-          </ul>
-        </>
+        <tbody id="table-body" hx-swap-oob="beforeend">
+          <tr id={'question' + questionNumber}>
+            <td class="question">
+              <div>
+                <div>{question}</div>
+                <button hx-delete={'/question/' + questionNumber}>✕</button>
+              </div>
+            </td>
+            <td class="answer" id={answerId}>
+              <div>{getAnswer(question)}</div>
+            </td>
+          </tr>
+        </tbody>
       );
 
       // Simulate slow responses.
