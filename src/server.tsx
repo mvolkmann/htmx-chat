@@ -54,13 +54,19 @@ app.get('/ws', c => {
   server.addEventListener('message', event => {
     const {data} = event;
     if (typeof data === 'string') {
-      const message = data.startsWith('{') ? JSON.parse(data).message : data;
-      console.log('message =', message);
+      const question = data.startsWith('{') ? JSON.parse(data).message : data;
+      console.log('question =', question);
       const index = Math.floor(Math.random() * magic8Ball.length);
+      const answer = magic8Ball[index];
       const html = (
-        <div id="response" hx-swap-oob="true">
-          {magic8Ball[index]}
-        </div>
+        <>
+          <ul id="question-list" hx-swap-oob="beforeend">
+            <li>{question}</li>
+          </ul>
+          <ul id="answer-list" hx-swap-oob="beforeend">
+            <li>{answer}</li>
+          </ul>
+        </>
       );
       server.send(html.toString());
     } else {

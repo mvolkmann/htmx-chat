@@ -43,11 +43,7 @@ router.get('/', (c: Context) => {
       <main>
         <nav id="questions">
           <h2>Questions</h2>
-          {questions.map(question => (
-            <button hx-get="/chat/messages" hx-target="#message-list">
-              {question}
-            </button>
-          ))}
+          <ul id="question-list"></ul>
         </nav>
         <section id="answers">
           <h2>Answers</h2>
