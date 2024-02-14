@@ -3,31 +3,7 @@ import {serveStatic} from 'hono/cloudflare-workers';
 // TODO: I don't know why this is needed.
 import manifest from '__STATIC_CONTENT_MANIFEST';
 
-const magic8Ball = [
-  'It is certain',
-  'It is decidedly so',
-  'Without a doubt',
-  'Yes definitely',
-  'You may rely on it',
-
-  'As I see it, yes',
-  'Most likely',
-  'Outlook good',
-  'Yes',
-  'Signs point to yes',
-
-  'Reply hazy, try again',
-  'Ask again later',
-  'Better not tell you now',
-  'Cannot predict now',
-  'Concentrate and ask again',
-
-  "Don't count on it",
-  'My reply is no',
-  'My sources say no',
-  'Outlook not so good',
-  'Very doubtful'
-];
+import magic8Ball from './magic8ball.json';
 
 const app = new Hono();
 
@@ -37,7 +13,6 @@ app.get('/*', serveStatic({root: './', manifest}));
 
 app.get('/ws', c => {
   const upgradeHeader = c.req.header('Upgrade');
-  console.log('server.ts /ws: upgradeHeader =', upgradeHeader);
   if (upgradeHeader !== 'websocket') {
     return c.text('upgrade header required', {status: 426});
   }
