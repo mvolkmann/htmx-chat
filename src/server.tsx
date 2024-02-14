@@ -21,8 +21,8 @@ app.delete('/question/:id', (c: Context) => {
   const id = c.req.param('id');
   const html = (
     <>
-      <li id={'question' + id} hx-swap-oob="outerHTML"></li>
-      <li id={'answer' + id} hx-swap-oob="outerHTML"></li>
+      <li id={'question' + id} hx-swap-oob="delete"></li>
+      <li id={'answer' + id} hx-swap-oob="delete"></li>
     </>
   );
 
