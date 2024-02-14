@@ -14,9 +14,10 @@ body {
 }
 
 button {
-  background-color: lightgreen;
+  background-color: orange;
   border: none;
   border-radius: 0.5rem;
+  font-weight: bold;
   padding: 0.5rem;
 }
 
