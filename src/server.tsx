@@ -55,7 +55,6 @@ app.get('/ws', c => {
     const {data} = event;
     if (typeof data === 'string') {
       const question = data.startsWith('{') ? JSON.parse(data).message : data;
-      console.log('question =', question);
       const index = Math.floor(Math.random() * magic8Ball.length);
       const answer = magic8Ball[index];
       const html = (
