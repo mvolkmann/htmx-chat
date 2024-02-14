@@ -1,9 +1,17 @@
 import {Hono} from 'hono';
 import {serveStatic} from 'hono/cloudflare-workers';
-// TODO: I don't know why this is needed.
+
+// @ts-ignore
+import magic8Ball from './magic8ball.json';
+
+// TODO: Why is this needed?
+// @ts-ignore
 import manifest from '__STATIC_CONTENT_MANIFEST';
 
-import magic8Ball from './magic8ball.json';
+function getAnswer(question: string): string {
+  const index = Math.floor(Math.random() * magic8Ball.length);
+  return magic8Ball[index];
+}
 
 const app = new Hono();
 
@@ -11,15 +19,15 @@ const app = new Hono();
 // [site] bucket directory specified in wrangler.toml.
 app.get('/*', serveStatic({root: './', manifest}));
 
+// This establishes a WebSocket connection.
 app.get('/ws', c => {
   const upgradeHeader = c.req.header('Upgrade');
   if (upgradeHeader !== 'websocket') {
-    return c.text('upgrade header required', {status: 426});
+    return c.text('WebSocket upgrade header required', {status: 426});
   }
 
-  const webSocketPair = new WebSocketPair();
   //TODO: How should "client" be used?
-  const [client, server] = Object.values(webSocketPair);
+  const [client, server] = Object.values(new WebSocketPair());
 
   server.accept();
 
@@ -27,15 +35,13 @@ app.get('/ws', c => {
     const {data} = event;
     if (typeof data === 'string') {
       const question = data.startsWith('{') ? JSON.parse(data).message : data;
-      const index = Math.floor(Math.random() * magic8Ball.length);
-      const answer = magic8Ball[index];
       const html = (
         <>
           <ul id="question-list" hx-swap-oob="beforeend">
             <li>{question}</li>
           </ul>
           <ul id="answer-list" hx-swap-oob="beforeend">
-            <li>{answer}</li>
+            <li>{getAnswer(question)}</li>
           </ul>
         </>
       );
