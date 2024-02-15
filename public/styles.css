@@ -22,6 +22,10 @@ button {
   padding: 0.5rem;
 }
 
+.delete-btn {
+  font-size: 1.5rem;
+}
+
 h1 {
   color: orange;
 }

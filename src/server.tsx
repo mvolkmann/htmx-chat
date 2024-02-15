@@ -52,7 +52,12 @@ app.get('/ws', (c: Context) => {
             <td class="question">
               <div>
                 <div>{question}</div>
-                <button hx-delete={'/question/' + questionNumber}>✕</button>
+                <button
+                  class="delete-btn"
+                  hx-delete={'/question/' + questionNumber}
+                >
+                  ✕
+                </button>
               </div>
             </td>
             <td class="answer" id={answerId}>
